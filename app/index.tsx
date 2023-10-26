@@ -8,32 +8,29 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Image } from "expo-image";
 import { H6, Input, Paragraph, ScrollView, Spinner, View } from "tamagui";
 
-const url = "https://nekos.best/api/v2/neko?amount=20";
+const url = "https://fakestoreapi.com/products";
 
 export default function index() {
   const insets = useSafeAreaInsets();
-  const [fruits, setFruits] = React.useState([]);
+  const [products, setProducts] = React.useState([]);
   const [search, setSearch] = React.useState("");
   const [loading, setLoading] = React.useState(false);
 
-  const fetchFruits = React.useCallback(async () => {
+  const fetchProducts = React.useCallback(async () => {
     setLoading(true);
-    const response = await fetch(url, {
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
-    const fruits = await response.json();
-    setLoading(false);
-
-    setFruits(fruits.results);
+    fetch("https://fakestoreapi.com/products")
+      .then((res) => res.json())
+      .then((json) => {
+        setProducts(json);
+        setLoading(false);
+      });
   }, []);
 
   React.useEffect(() => {
-    fetchFruits();
+    fetchProducts();
   }, []);
 
-  console.log(JSON.stringify(fruits, null, 2));
+  console.log(JSON.stringify(products, null, 2));
 
   if (loading)
     return (
@@ -57,7 +54,7 @@ export default function index() {
       px={"$4"}
       gap="$3"
     >
-      <H6 size="$8">Let&apos;s Search for your fruits</H6>
+      <H6 size="$8">Let&apos;s Search for your Products</H6>
 
       <Input
         bg="#d4d4d4"
@@ -67,23 +64,22 @@ export default function index() {
       />
 
       <FlatList
-        data={fruits}
+        data={products}
         numColumns={2}
         showsVerticalScrollIndicator={false}
         columnWrapperStyle={{ justifyContent: "space-between" }}
         ItemSeparatorComponent={() => <View h={hp(2)} />}
-        keyExtractor={(item) => item.name}
+        keyExtractor={(item) => item.id}
         refreshControl={
           <RefreshControl
             refreshing={false}
             onRefresh={() => {
-              fetchFruits();
+              fetchProducts();
             }}
           />
         }
         renderItem={({ item, index }) => (
           <View
-            key={index}
             bg="#d4d4d4"
             overflow="hidden"
             borderRadius="$10"
