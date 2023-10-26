@@ -9010,6 +9010,13 @@ moti@^0.25.3:
   dependencies:
     framer-motion "^6.5.1"
 
+moti@^0.27.0:
+  version "0.27.0"
+  resolved "https://registry.yarnpkg.com/moti/-/moti-0.27.0.tgz#1590589e566044fcb2ffa775a7b333b319151248"
+  integrity sha512-sVEFFVvo4XKGn3POUUTRONIuQCH1iA0THnjZdb4SSxn/x365ptoqZg1DflTq3egTox3WJT+7u27HErrzGmU/7g==
+  dependencies:
+    framer-motion "^6.5.1"
+
 ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
