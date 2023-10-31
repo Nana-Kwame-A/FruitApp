@@ -128,7 +128,7 @@ export default function index() {
                     h={hp(30)}
                     borderWidth={3}
                     borderColor={"skyblue"}
-                    gap="$3"
+                  
                   >
                     <View
                       h="60%"
@@ -150,6 +150,7 @@ export default function index() {
                       w="100%"
                       jc="flex-end"
                       position="relative"
+                      bg='white'
                     >
                       <Paragraph
                         fontWeight="600"
@@ -182,7 +183,7 @@ export default function index() {
                       >
                         <ShoppingCart
                           // @ts-ignore
-                          bottom={8}
+                          bottom={3}
                           size={15}
                           color="white"
                         />
