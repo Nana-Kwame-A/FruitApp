@@ -3,7 +3,6 @@ import {
   FlatList,
   Pressable,
   RefreshControl,
-  TouchableHighlight,
   TouchableOpacity
 } from "react-native";
 import {
