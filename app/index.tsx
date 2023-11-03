@@ -6,6 +6,7 @@ import {
   TouchableHighlight,
   TouchableOpacity
 } from "react-native";
+import Animated from "react-native-reanimated";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp
@@ -44,6 +45,9 @@ export default function index() {
       product.title.toLowerCase().includes(search.toLowerCase())
     );
   }, [search, products]);
+
+
+  console.log(JSON.stringify(products, null, 2))
 
   if (loading)
     return (
@@ -128,7 +132,6 @@ export default function index() {
                     h={hp(30)}
                     borderWidth={3}
                     borderColor={"skyblue"}
-                  
                   >
                     <View
                       h="60%"
@@ -136,11 +139,14 @@ export default function index() {
                       bg="white"
                       p="$5"
                     >
-                      <Image
+                      <Animated.Image
+                        sharedTransitionTag={`${item.id}`}
                         source={{ uri: item.image }}
-                        contentFit="contain"
-                        style={{ height: "80%", width: "100%" }}
-                        transition={100}
+                        style={{
+                          height: "80%",
+                          width: "100%",
+                          objectFit: "contain"
+                        }}
                       />
                     </View>
 
@@ -150,10 +156,11 @@ export default function index() {
                       w="100%"
                       jc="flex-end"
                       position="relative"
-                      bg='white'
+                      bg="white"
                     >
                       <Paragraph
                         fontWeight="600"
+                        color="black"
                         size="$2"
                         numberOfLines={2}
                         px="$3"
@@ -165,6 +172,7 @@ export default function index() {
                         size="$6"
                         px="$4"
                         pb="$2"
+                        color="black"
                       >
                         ${item.price}
                       </Paragraph>
