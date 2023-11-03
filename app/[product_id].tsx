@@ -10,7 +10,15 @@ import { ChevronLeft, Heart } from "@tamagui/lucide-icons";
 import { Image } from "expo-image";
 import { useLocalSearchParams } from "expo-router";
 import { Link } from "expo-router";
-import { Button, H5, Paragraph, View, XStack, YStack } from "tamagui";
+import {
+  Button,
+  H5,
+  Paragraph,
+  ScrollView,
+  View,
+  XStack,
+  YStack
+} from "tamagui";
 
 import Counter from "../components/Counter";
 
@@ -55,62 +63,66 @@ export default function ProductDetails() {
         />
       </XStack>
 
-      <View
-        bg="white"
-        p="$3"
-        br="$10"
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          flexGrow: 1,
+          paddingBottom: insets.bottom + 100
+        }}
       >
-        <Animated.Image
-          sharedTransitionTag={`${params.id}`}
-          source={{ uri: params.image as unknown as string }}
-          style={{
-            width: "100%",
-            height: hp("35%"),
-            marginVertical: 10,
-            objectFit: "contain"
-          }}
-        />
-      </View>
-
-      <YStack
-        space="$5"
-        mt="$2"
-        flex={1}
-      >
-        <H5 size="$8">{params.title}</H5>
-
-        <XStack
-          jc="space-between"
-          ai="center"
-          mt="$2"
-        >
-          <Counter
-            setCount={setCount}
-            value={count.toString()}
-          />
-          <Paragraph size="$8">
-            {/* @ts-ignore */}$
-            {(parseFloat(params?.price ?? 1).toFixed(2) * count).toFixed(2)}{" "}
-          </Paragraph>
-        </XStack>
-
-        <Paragraph>{params.description}</Paragraph>
-
         <View
-          flex={1}
-          jc="flex-end"
-          pb={insets.bottom + 10}
+          bg="white"
+          p="$3"
+          br="$10"
         >
-          <Button
-            bg="red"
-            color="white"
-            width='80%'
-            alignSelf='center'
-          >
-            Add to Cart
-          </Button>
+          <Animated.Image
+            sharedTransitionTag={`${params.id}`}
+            source={{ uri: params.image as unknown as string }}
+            style={{
+              width: "100%",
+              height: hp("35%"),
+              marginVertical: 10,
+              objectFit: "contain"
+            }}
+          />
         </View>
-      </YStack>
+
+        <YStack
+          space="$5"
+          mt="$2"
+          flex={1}
+        >
+          <H5 size="$8">{params.title}</H5>
+
+          <XStack
+            jc="space-between"
+            ai="center"
+            mt="$2"
+          >
+            <Counter
+              setCount={setCount}
+              value={count.toString()}
+            />
+            <Paragraph size="$8">
+              {/* @ts-ignore */}$
+              {(parseFloat(params?.price ?? 1).toFixed(2) * count).toFixed(2)}{" "}
+            </Paragraph>
+          </XStack>
+
+          <Paragraph>{params.description}</Paragraph>
+        </YStack>
+      </ScrollView>
+
+      <Button
+        bg="red"
+        color="white"
+        width="80%"
+        alignSelf="center"
+        mb={insets.bottom + 20}
+        mt='$3'
+      >
+        Add to Cart
+      </Button>
     </View>
   );
 }

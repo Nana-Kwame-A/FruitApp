@@ -47,21 +47,6 @@ export default function index() {
   }, [search, products]);
 
 
-  console.log(JSON.stringify(products, null, 2))
-
-  if (loading)
-    return (
-      <View
-        flex={1}
-        ai="center"
-        justifyContent="center"
-      >
-        <Spinner
-          size="large"
-          color="red"
-        />
-      </View>
-    );
 
   return (
     <View
@@ -83,126 +68,139 @@ export default function index() {
       />
 
       <AnimatePresence>
-        <FlatList
-          data={filteredProducts}
-          numColumns={2}
-          showsVerticalScrollIndicator={false}
-          columnWrapperStyle={{ justifyContent: "space-between" }}
-          ItemSeparatorComponent={() => <View h={hp(2)} />}
-          keyExtractor={(item) => item.id}
-          refreshControl={
-            <RefreshControl
-              refreshing={false}
-              onRefresh={() => {
-                fetchProducts();
-              }}
+        {loading ? (
+          <View
+            flex={1}
+            ai="center"
+            justifyContent="center"
+          >
+            <Spinner
+              size="large"
+              color="red"
             />
-          }
-          renderItem={({ item, index }) => (
-            <Link
-              asChild
-              href={{
-                pathname: `/${item.id}`,
-                params: { ...item }
-              }}
-            >
-              <TouchableOpacity>
-                <MotiView
-                  transition={{ delay: index * 100, damping: 30, mass: 1 }}
-                  from={{
-                    opacity: 0,
-                    translateY: -50
-                  }}
-                  animate={{
-                    opacity: 1,
-                    translateY: 0
-                  }}
-                  exit={{
-                    opacity: 0,
-                    translateX: 50
-                  }}
-                >
-                  <View
-                    bg="#d4d4d4"
-                    overflow="hidden"
-                    borderRadius="$10"
-                    justifyContent="space-between"
-                    alignItems="center"
-                    w={wp(43.5)}
-                    h={hp(30)}
-                    borderWidth={3}
-                    borderColor={"skyblue"}
+          </View>
+        ) : (
+          <FlatList
+            data={filteredProducts.slice(0, 14)}
+            numColumns={2}
+            showsVerticalScrollIndicator={false}
+            columnWrapperStyle={{ justifyContent: "space-between" }}
+            ItemSeparatorComponent={() => <View h={hp(2)} />}
+            keyExtractor={(item) => item.id}
+            refreshControl={
+              <RefreshControl
+                refreshing={false}
+                onRefresh={() => {
+                  fetchProducts();
+                }}
+              />
+            }
+            renderItem={({ item, index }) => (
+              <Link
+                asChild
+                href={{
+                  pathname: `/${item.id}`,
+                  params: { ...item }
+                }}
+              >
+                <TouchableOpacity>
+                  <MotiView
+                    transition={{ delay: index * 100, damping: 30, mass: 1 }}
+                    from={{
+                      opacity: 0,
+                      translateY: -50
+                    }}
+                    animate={{
+                      opacity: 1,
+                      translateY: 0
+                    }}
+                    exit={{
+                      opacity: 0,
+                      translateX: 50
+                    }}
                   >
                     <View
-                      h="60%"
-                      w="100%"
-                      bg="white"
-                      p="$5"
+                      bg="#d4d4d4"
+                      overflow="hidden"
+                      borderRadius="$10"
+                      justifyContent="space-between"
+                      alignItems="center"
+                      w={wp(43.5)}
+                      h={hp(30)}
+                      borderWidth={3}
+                      borderColor={"skyblue"}
                     >
-                      <Animated.Image
-                        sharedTransitionTag={`${item.id}`}
-                        source={{ uri: item.image }}
-                        style={{
-                          height: "80%",
-                          width: "100%",
-                          objectFit: "contain"
-                        }}
-                      />
-                    </View>
-
-                    <View
-                      h="40%"
-                      space="$4"
-                      w="100%"
-                      jc="flex-end"
-                      position="relative"
-                      bg="white"
-                    >
-                      <Paragraph
-                        fontWeight="600"
-                        color="black"
-                        size="$2"
-                        numberOfLines={2}
-                        px="$3"
+                      <View
+                        h="60%"
+                        w="100%"
+                        bg="white"
+                        p="$5"
                       >
-                        {item.title}
-                      </Paragraph>
-
-                      <Paragraph
-                        size="$6"
-                        px="$4"
-                        pb="$2"
-                        color="black"
-                      >
-                        ${item.price}
-                      </Paragraph>
-
-                      <Pressable
-                        style={{
-                          position: "absolute",
-                          zIndex: 10,
-                          right: 0,
-                          bottom: 0,
-                          paddingHorizontal: 10,
-                          paddingVertical: 20,
-                          backgroundColor: "skyblue",
-                          borderTopLeftRadius: 500
-                        }}
-                      >
-                        <ShoppingCart
-                          // @ts-ignore
-                          bottom={3}
-                          size={15}
-                          color="white"
+                        <Animated.Image
+                          sharedTransitionTag={`${item.id}`}
+                          source={{ uri: item.image }}
+                          style={{
+                            height: "80%",
+                            width: "100%",
+                            objectFit: "contain"
+                          }}
                         />
-                      </Pressable>
+                      </View>
+
+                      <View
+                        h="40%"
+                        space="$4"
+                        w="100%"
+                        jc="flex-end"
+                        position="relative"
+                        bg="white"
+                      >
+                        <Paragraph
+                          fontWeight="600"
+                          color="black"
+                          size="$2"
+                          numberOfLines={2}
+                          px="$3"
+                        >
+                          {item.title}
+                        </Paragraph>
+
+                        <Paragraph
+                          size="$6"
+                          px="$4"
+                          pb="$2"
+                          color="black"
+                        >
+                          ${item.price}
+                        </Paragraph>
+
+                        <Pressable
+                          style={{
+                            position: "absolute",
+                            zIndex: 10,
+                            right: 0,
+                            bottom: 0,
+                            paddingHorizontal: 10,
+                            paddingVertical: 20,
+                            backgroundColor: "skyblue",
+                            borderTopLeftRadius: 500
+                          }}
+                        >
+                          <ShoppingCart
+                            // @ts-ignore
+                            bottom={3}
+                            size={15}
+                            color="white"
+                          />
+                        </Pressable>
+                      </View>
                     </View>
-                  </View>
-                </MotiView>
-              </TouchableOpacity>
-            </Link>
-          )}
-        />
+                  </MotiView>
+                </TouchableOpacity>
+              </Link>
+            )}
+          />
+        )}
       </AnimatePresence>
     </View>
   );
