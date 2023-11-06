@@ -3,8 +3,8 @@ import {
   FlatList,
   Pressable,
   RefreshControl,
-  TouchableHighlight,
-  TouchableOpacity
+  TouchableOpacity,
+  useColorScheme
 } from "react-native";
 import Animated from "react-native-reanimated";
 import {
@@ -12,11 +12,12 @@ import {
   widthPercentageToDP as wp
 } from "react-native-responsive-screen";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { ShoppingCart } from "@tamagui/lucide-icons";
+import switchTheme from "react-native-theme-switch-animation";
+import { Moon, ShoppingCart } from "@tamagui/lucide-icons";
 import { Image } from "expo-image";
 import { Link } from "expo-router";
 import { AnimatePresence, MotiView } from "moti";
-import { H6, Input, Paragraph, ScrollView, Spinner, View } from "tamagui";
+import { Button, H6, Input, Paragraph, Spinner, View, XStack } from "tamagui";
 
 const url = "https://fakestoreapi.com/products";
 
@@ -25,7 +26,8 @@ export default function index() {
   const [products, setProducts] = React.useState([]);
   const [search, setSearch] = React.useState("");
   const [loading, setLoading] = React.useState(false);
-
+  const colorScheme = useColorScheme();
+  const [theme, setTheme] = React.useState(colorScheme);
   const fetchProducts = React.useCallback(async () => {
     setLoading(true);
     fetch("https://fakestoreapi.com/products")
@@ -46,8 +48,6 @@ export default function index() {
     );
   }, [search, products]);
 
-
-
   return (
     <View
       paddingTop={insets.top + 10}
@@ -56,7 +56,26 @@ export default function index() {
       px={"$4"}
       gap="$3"
     >
-      <H6 size="$8">Let&apos;s Search for your Products</H6>
+      <XStack
+        space="$2"
+        ai="center"
+      >
+        <H6 size="$8">Let&apos;s Search for your Products</H6>
+        <Button
+          icon={<Moon size="icon.md" />}
+          onPress={() => {
+            switchTheme({
+              switchThemeFunction: () => {
+                setTheme(theme === "light" ? "dark" : "light"); // your switch theme function
+              },
+              animationConfig: {
+                type: "fade",
+                duration: 900
+              }
+            });
+          }}
+        />
+      </XStack>
 
       <Input
         bg="#d4d4d4"
