@@ -1,5 +1,6 @@
 {
   "expo": {
+    "owner": "fred-adu",
     "scheme": "tamagui-app",
     "userInterfaceStyle": "automatic",
     "splash": {
@@ -9,6 +10,17 @@
     },
     "icon": "./assets/icon.png",
     "name": "FruitApp",
-    "slug": "FruitApp"
+    "slug": "FruitApp",
+    "android": {
+      "package": "com.fruitapp"
+    },
+    "ios": {
+      "bundleIdentifier": "com.fruitapp"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "1bbc3308-fe9c-4047-9c92-742c9312642f"
+      }
+    }
   }
 }

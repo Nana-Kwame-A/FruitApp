@@ -1,91 +1,128 @@
 import React from "react";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import Animated from "react-native-reanimated";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp
 } from "react-native-responsive-screen";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { parse } from "react-native-svg";
+import { ChevronLeft, Heart } from "@tamagui/lucide-icons";
 import { Image } from "expo-image";
 import { useLocalSearchParams } from "expo-router";
-import { Paragraph, ScrollView, View } from "tamagui";
+import { Link } from "expo-router";
+import {
+  Button,
+  H5,
+  Paragraph,
+  ScrollView,
+  View,
+  XStack,
+  YStack
+} from "tamagui";
+
+import Counter from "../components/Counter";
 
 export default function ProductDetails() {
   const params = useLocalSearchParams();
-
-  // alert(JSON.stringify(params, null, 2));
-
-  console.log(params);
   const insets = useSafeAreaInsets();
-
-  console.log(params.image);
+  console.log();
+  const [count, setCount] = React.useState<number>(1);
 
   return (
     <View
-      bg="lightblue"
       flex={1}
-      paddingTop={insets.top + 10}
-      paddingBottom={insets.bottom}
+      pt={insets.top}
+      px="$4"
     >
-      <Paragraph>Product Details</Paragraph>
+      <XStack
+        jc="space-between"
+        ai="center"
+      >
+        <Link
+          asChild
+          href="/"
+        >
+          <Button
+            bg="transparent"
+            icon={<ChevronLeft size="$icon.lg" />}
+            pressStyle={{
+              bg: "transparent",
+              borderColor: "transparent"
+            }}
+          />
+        </Link>
 
-      <View
-        flex={6}
-        // alignItems="center"
+        <Button
+          bg="transparent"
+          color="red"
+          icon={<Heart size="$icon.lg" />}
+          pressStyle={{
+            bg: "transparent",
+            borderColor: "transparent"
+          }}
+        />
+      </XStack>
+
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          flexGrow: 1,
+          paddingBottom: insets.bottom + 100
+        }}
       >
         <View
-          // h="100%"
-          // w="100%"
-          flex={1}
-          // bg="white"
-          // p="$5"
-          w="100%"
-          bg="red"
+          bg="white"
+          p="$3"
+          br="$10"
         >
-          <Image
-            source={params.image}
-            style={{ height: "100%", width: "100%", backgroundColor: "white" }}
-            contentFit="cover"
+          <Animated.Image
+            sharedTransitionTag={`${params.id}`}
+            source={{ uri: params.image as unknown as string }}
+            style={{
+              width: "100%",
+              height: hp("35%"),
+              marginVertical: 10,
+              objectFit: "contain"
+            }}
           />
         </View>
-      </View>
 
-      <View flex={4}>
-        <View
-          space="$4"
-          alignItems="center"
-          position="relative"
+        <YStack
+          space="$5"
+          mt="$2"
+          flex={1}
         >
-          <Paragraph
-            fontWeight="600"
-            size="$5"
-            px="$3"
-          >
-            {params.title}
-          </Paragraph>
+          <H5 size="$8">{params.title}</H5>
 
-          <Paragraph
-            size="$6"
-            px="$4"
-            pb="$2"
+          <XStack
+            jc="space-between"
+            ai="center"
+            mt="$2"
           >
-            ${params.price}
-          </Paragraph>
-          <Paragraph
-            size="$6"
-            px="$4"
-            pb="$2"
-          >
-            {params.description}
-          </Paragraph>
-        </View>
-      </View>
-      <View>
-        <TouchableOpacity>
-          <View pb="$7">
-            <Paragraph>Add to Cart</Paragraph>
-          </View>
-        </TouchableOpacity>
-      </View>
+            <Counter
+              setCount={setCount}
+              value={count.toString()}
+            />
+            <Paragraph size="$8">
+              {/* @ts-ignore */}$
+              {(parseFloat(params?.price ?? 1).toFixed(2) * count).toFixed(2)}{" "}
+            </Paragraph>
+          </XStack>
+
+          <Paragraph>{params.description}</Paragraph>
+        </YStack>
+      </ScrollView>
+
+      <Button
+        bg="red"
+        color="white"
+        width="80%"
+        alignSelf="center"
+        mb={insets.bottom + 20}
+        mt='$3'
+      >
+        Add to Cart
+      </Button>
     </View>
   );
 }
